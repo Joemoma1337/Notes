@@ -1,0 +1,64 @@
+echo '<password>' | sudo useradd -m -s /bin/bash -G root <username>  && echo <username>:<password> | sudo chpasswdDescription	Linux
+#	add admin user oneliner
+	
+#	Add firewall rule
+
+#	connect to wireless network
+
+#	Delete firewall rule
+
+#	Delete folder
+
+#	disconnect from wireless network
+
+#	export (to .xml) networks and passwords
+
+#	FW rule to block 192.168.0.0/16
+
+#	FW rule to block 192.168.0.0/16 (internet)
+sha1sum <path_to_file> or md5sum <path_to_file>
+#	Get file hash
+	
+#	list all connections
+
+#	list available wireless networks
+
+#	list available wireless networks (with strength)
+
+#	list connected storage
+lsblk -o name,label,size,mountpoint
+#	list connected USB
+	
+#	List known wireless networks
+netstat -lptn
+#	list listening connection
+lsblk -o name,model,vendor,serial,size	
+#	list storage
+logout <username> or pkill -KILL -t <terminal #>	
+#	log off a user
+ 	
+#	query connected wireless network
+
+#	query event logs and filter by keyword
+
+#	query event logs and filter by multiple keywords
+dpkg-query -f='${binary:Package} ${Version}\n' -W or apt list --installed
+#	query installed programs
+dpkg-query -f='${binary:Package} ${Version}\n' -W | grep -i mimecast or apt list --installed | grep -i mimecast 	
+#	query installed programs and filter by name
+	
+#	query locally connected devices
+who
+#	query logged on user
+curl https://macvendors.com/query/<MAC_Address>	
+#	Query MAC address vendor
+curl -s https://ifconfig.me/ip	
+#	query public IP
+find / -iname *keyword*	
+#	search all directories for a keyword
+	
+#	show firewall rules
+
+#	show firewall rules for specific profile
+iptables -L or systemctl status firewalld or firewall-cmd --list-all or ufw status
+#	show firewall state
