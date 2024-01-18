@@ -1,33 +1,33 @@
-Description									                CMD
-add admin user oneliner:									  net user <username> * /add /passwordreq:yes && net localgroup Administrators <username> /add
-Add firewall rule:										  	  netsh advfirewall firewall add rule name="Rule Name" dir=in|out action=block|allow protocol=TCP|UDP localport=<port number> remoteip=<IP address>
-connect to wireless network:							  netsh wlan connect name=<network name>
-Delete firewall rule:										    netsh advfirewall firewall delete rule name="Rule Name"
-Delete folder:												      rmdir <folder> /s /q
-disconnect from wireless network:			      netsh wlan disconnect
-export (to .xml) networks and passwords:	  netsh wlan export profile key=clear
-FW rule to block 192.168.0.0/16:			      netsh advfirewall firewall add rule name="Block Class C IPs" dir=in protocol=any remoteip=192.168.0.0/16 action=block
+Description									CMD
+add admin user oneliner:					net user <username> * /add /passwordreq:yes && net localgroup Administrators <username> /add
+Add firewall rule:							netsh advfirewall firewall add rule name="Rule Name" dir=in|out action=block|allow protocol=TCP|UDP localport=<port number> remoteip=<IP address>
+connect to wireless network:				netsh wlan connect name=<network name>
+Delete firewall rule:						netsh advfirewall firewall delete rule name="Rule Name"
+Delete folder:								rmdir <folder> /s /q
+disconnect from wireless network:			netsh wlan disconnect
+export (to .xml) networks and passwords:	netsh wlan export profile key=clear
+FW rule to block 192.168.0.0/16:			netsh advfirewall firewall add rule name="Block Class C IPs" dir=in protocol=any remoteip=192.168.0.0/16 action=block
 FW rule to block 192.168.0.0/16 (internet):	netsh advfirewall firewall add rule name="192.168 Block" action=block profile=any localip=192.168.0.0/16 remoteport=53,80,443 dir=out protocol=tcp
-Get file hash:															CertUtil -hashfile <path_to_file> SHA256
-list all connections:										    netstat -a
-list wireless networks:										  netsh wlan show networks
-list wireless networks (with strength):		  netsh wlan show networks mode=bssid
-list connected storage:											wmic logicaldisk get caption, VolumeName
-list connected USB:											    wmic logicaldisk where drivetype=2 get deviceid, volumename
-List known wireless networks:								netsh wlan show profile
-list listening connection:									netstat -nab
-list storage:																wmic diskdrive get Name, Manufacturer, Model, InterfaceType, MediaLoaded, MediaType
-log off a user:															logoff <session ID>
-query connected wireless network:			      netsh wlan show interface
-query event logs filter keyword:			      wevtutil qe Application /q:"*[System[(Level=1 or Level=2 or Level=3) and (Keywords=0x80)]]" /f:text | findstr /C:"keyword"
+Get file hash:								CertUtil -hashfile <path_to_file> SHA256
+list all connections:						netstat -a
+list wireless networks:						netsh wlan show networks
+list wireless networks (with strength):		netsh wlan show networks mode=bssid
+list connected storage:						wmic logicaldisk get caption, VolumeName
+list connected USB:							wmic logicaldisk where drivetype=2 get deviceid, volumename
+List known wireless networks:				netsh wlan show profile
+list listening connection:					netstat -nab
+list storage:								wmic diskdrive get Name, Manufacturer, Model, InterfaceType, MediaLoaded, MediaType
+log off a user:								logoff <session ID>
+query connected wireless network:			netsh wlan show interface
+query event logs filter keyword:			wevtutil qe Application /q:"*[System[(Level=1 or Level=2 or Level=3) and (Keywords=0x80)]]" /f:text | findstr /C:"keyword"
 query event logs filter multiple keywords:	wevtutil qe Application /q:"*[System[(Level=1 or Level=2 or Level=3) and (Keywords=0x80)]]" /f:text | findstr /C:"keyword1 keyword2"
-query installed programs:									  wmic product get name,version,identifyingnumber
-query installed programs filter by name:	  wmic product get name,identifyingnumber,version | findstr /I Mimecast
-query locally connected devices:						arp -a
-query logged on user:										    query user
-Query MAC address vendor:									  curl https://macvendors.com/query/<MAC_Address>
-query public IP:											      curl -s https://ifconfig.me/ip
-search all directories for a keyword:		    Dir /b/s *keyword*
-show firewall rules:										    netsh advfirewall firewall show rule name=all
-show firewall rules for specific profile:	  netsh advfirewall firewall show rule name=all profile=<profile>
-show firewall state:										    netsh advfirewall show allprofiles state
+query installed programs:					wmic product get name,version,identifyingnumber
+query installed programs filter by name:	wmic product get name,identifyingnumber,version | findstr /I Mimecast
+query locally connected devices:			arp -a
+query logged on user:						query user
+Query MAC address vendor:					curl https://macvendors.com/query/<MAC_Address>
+query public IP:							curl -s https://ifconfig.me/ip
+search all directories for a keyword:		Dir /b/s *keyword*
+show firewall rules:						netsh advfirewall firewall show rule name=all
+show firewall rules for specific profile:	netsh advfirewall firewall show rule name=all profile=<profile>
+show firewall state:						netsh advfirewall show allprofiles state
