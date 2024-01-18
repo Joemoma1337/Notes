@@ -1,4 +1,4 @@
-Description									                CMD
+Description									             CMD
 add admin user oneliner:					          net user <username> * /add /passwordreq:yes && net localgroup Administrators <username> /add
 Add firewall rule:							            netsh advfirewall firewall add rule name="Rule Name" dir=in|out action=block|allow protocol=TCP|UDP localport=<port number> remoteip=<IP address>
 connect to wireless network:				        netsh wlan connect name=<network name>
