@@ -1,7 +1,7 @@
-Description									CMD
-add admin user oneliner:					net user <username> * /add /passwordreq:yes && net localgroup Administrators <username> /add
-Add firewall rule:							netsh advfirewall firewall add rule name="Rule Name" dir=in|out action=block|allow protocol=TCP|UDP localport=<port number> remoteip=<IP address>
-connect to wireless network:				netsh wlan connect name=<network name>
+Description									                CMD
+add admin user oneliner:					          net user <username> * /add /passwordreq:yes && net localgroup Administrators <username> /add
+Add firewall rule:							            netsh advfirewall firewall add rule name="Rule Name" dir=in|out action=block|allow protocol=TCP|UDP localport=<port number> remoteip=<IP address>
+connect to wireless network:				        netsh wlan connect name=<network name>
 Delete firewall rule:						netsh advfirewall firewall delete rule name="Rule Name"
 Delete folder:								rmdir <folder> /s /q
 disconnect from wireless network:			netsh wlan disconnect
