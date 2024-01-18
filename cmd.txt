@@ -1,66 +1,66 @@
-CMD
-	Description
+#Description
+#	CMD
 net user <username> * /add /passwordreq:yes && net localgroup Administrators <username> /add
-	add admin user oneliner
+#	add admin user oneliner
 netsh advfirewall firewall add rule name="Rule Name" dir=in|out action=block|allow protocol=TCP|UDP localport=<port number> remoteip=<IP address>
-	Add firewall rule
+#	Add firewall rule
 netsh wlan connect name=<network name>
-	connect to wireless network
+#	connect to wireless network
 netsh advfirewall firewall delete rule name="Rule Name"
-	Delete firewall rule
+#	Delete firewall rule
 rmdir <folder> /s /q
-	Delete folder
+#	Delete folder
 netsh wlan disconnect
-	disconnect from wireless network
+#	disconnect from wireless network
 netsh wlan export profile key=clear
-	export (to .xml) networks and passwords
+#	export (to .xml) networks and passwords
 netsh advfirewall firewall add rule name="Block Class C IPs" dir=in protocol=any remoteip=192.168.0.0/16 action=block
-	FW rule to block 192.168.0.0/16
+#	FW rule to block 192.168.0.0/16
 netsh advfirewall firewall add rule name="192.168 Block" action=block profile=any localip=192.168.0.0/16 remoteport=53,80,443 dir=out protocol=tcp
-	FW rule to block 192.168.0.0/16 (internet)
+#	FW rule to block 192.168.0.0/16 (internet)
 CertUtil -hashfile <path_to_file> SHA256
-	Get file hash
+#	Get file hash
 netstat -a
-	list all connections
+#	list all connections
 netsh wlan show networks
-	list wireless networks
+#	list wireless networks
 netsh wlan show networks mode=bssid
-	list wireless networks (with strength)
+#	list wireless networks (with strength)
 wmic logicaldisk get caption, VolumeName
-	list connected storage
+#	list connected storage
 wmic logicaldisk where drivetype=2 get deviceid, volumename
-	list connected USB
+#	list connected USB
 netsh wlan show profile
-	List known wireless networks
+#	List known wireless networks
 netstat -nab
-	list listening connection
+#	list listening connection
 wmic diskdrive get Name, Manufacturer, Model, InterfaceType, MediaLoaded, MediaType
-	list storage
+#	list storage
 logoff <session ID>
-	log off a user
+#	log off a user
 netsh wlan show interface
-	query connected wireless network
+#	query connected wireless network
 wevtutil qe Application /q:"*[System[(Level=1 or Level=2 or Level=3) and (Keywords=0x80)]]" /f:text | findstr /C:"keyword"
-	query event logs filter keyword
+#	query event logs filter keyword
 wevtutil qe Application /q:"*[System[(Level=1 or Level=2 or Level=3) and (Keywords=0x80)]]" /f:text | findstr /C:"keyword1 keyword2"
-	query event logs filter multiple keywords
+#	query event logs filter multiple keywords
 wmic product get name,version,identifyingnumber
-	query installed programs
+#	query installed programs
 wmic product get name,identifyingnumber,version | findstr /I Mimecast
-	query installed programs filter by name
+#	query installed programs filter by name
 arp -a
-	query locally connected devices
+#	query locally connected devices
 query user
-	query logged on user
+#	query logged on user
 curl https://macvendors.com/query/<MAC_Address>
-	Query MAC address vendor
+#	Query MAC address vendor
 curl -s https://ifconfig.me/ip
-	query public IP
+#	query public IP
 Dir /b/s *keyword*
-	search all directories for a keyword
+#	search all directories for a keyword
 netsh advfirewall firewall show rule name=all
-	show firewall rules
+#	show firewall rules
 netsh advfirewall firewall show rule name=all profile=<profile>
-	show firewall rules for specific profile
+#	show firewall rules for specific profile
 netsh advfirewall show allprofiles state
-	show firewall state
+#	show firewall state
