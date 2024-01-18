@@ -53,6 +53,7 @@ arp -a
 query user
 #	query logged on user
 query user /server:<hostname> | Select-String -Pattern "USERNAME|disc"
+#	query logged on user that is disconnected
 curl https://macvendors.com/query/<MAC_Address>
 #	Query MAC address vendor
 curl -s https://ifconfig.me/ip
