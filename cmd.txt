@@ -1,101 +1,64 @@
-#Description
-#CMD
-
-#add admin user oneliner
-net user <username> * /add /passwordreq:yes && net localgroup Administrators <username> /add
-
-#Add firewall rule
-netsh advfirewall firewall add rule name="Rule Name" dir=in|out action=block|allow protocol=TCP|UDP localport=<port number> remoteip=<IP address>
-
-#connect to wireless network
-netsh wlan connect name=<network name>
-
-#Delete firewall rule
-netsh advfirewall firewall delete rule name="Rule Name"
-
-#Delete folder
-rmdir <folder> /s /q
-
-#disconnect from wireless network
-netsh wlan disconnect
-
-#export (to .xml) networks and passwords
-netsh wlan export profile key=clear
-
-#FW rule to block 192.168.0.0/16
-netsh advfirewall firewall add rule name="Block Class C IPs" dir=in protocol=any remoteip=192.168.0.0/16 action=block
-
-#FW rule to block 192.168.0.0/16 (internet)
-netsh advfirewall firewall add rule name="192.168 Block" action=block profile=any localip=192.168.0.0/16 remoteport=53,80,443 dir=out protocol=tcp
-
-#Get file hash
-CertUtil -hashfile <path_to_file> SHA256
-
-#list all connections
-netstat -a
-
-#list wireless networks
-netsh wlan show networks
-
-#list wireless networks (with strength)
-netsh wlan show networks mode=bssid
-
-#list connected storage
-wmic logicaldisk get caption, VolumeName
-
-#list connected USB
-wmic logicaldisk where drivetype=2 get deviceid, volumename
-
-#List known wireless networks
-netsh wlan show profile
-
-#list listening connection
-netstat -nab
-
-#list storage
-wmic diskdrive get Name, Manufacturer, Model, InterfaceType, MediaLoaded, MediaType
-
-#log off a user
-logoff <session ID>
-
-#query connected wireless network
-netsh wlan show interface
-
-#query event logs filter keyword
-wevtutil qe Application /q:"*[System[(Level=1 or Level=2 or Level=3) and (Keywords=0x80)]]" /f:text | findstr /C:"keyword"
-
-#query event logs filter multiple keywords
-wevtutil qe Application /q:"*[System[(Level=1 or Level=2 or Level=3) and (Keywords=0x80)]]" /f:text | findstr /C:"keyword1 keyword2"
-
-#query installed programs
-wmic product get name,version,identifyingnumber
-
-#query installed programs filter by name
-wmic product get name,identifyingnumber,version | findstr /I Mimecast
-
-#query locally connected devices
-arp -a
-
-#query logged on user
-query user
-
-#query logged on user that is disconnected
-query user /server:<hostname> | Select-String -Pattern "USERNAME|disc"
-
-#Query MAC address vendor
-curl https://macvendors.com/query/<MAC_Address>
-
-#query public IP
-curl -s https://ifconfig.me/ip
-
-#search all directories for a keyword
-Dir /b/s *keyword*
-
-#show firewall rules
-netsh advfirewall firewall show rule name=all
-
-#show firewall rules for specific profile
-netsh advfirewall firewall show rule name=all profile=<profile>
-
-#show firewall state
-netsh advfirewall show allprofiles state
+#Get File Hash
+	certutil -hashfile "C:\path\to\file" SHA256
+#Query Public IP
+	curl ifconfig.me or powershell -command "Invoke-RestMethod -Uri 'http://ipinfo.io/ip'"
+#List Storage
+	diskpart (then type list disk) or wmic diskdrive get model,size
+#Search All Directories (Keyword)
+	findstr /s /i /m "keyword" *.*
+#Query MAC Address Vendor
+	getmac /v (Then manual lookup via OUI)
+#Log Off a User
+	logoff [SessionID] (Find ID via query user)
+#Admin User (One-liner)
+	net user [username] [password] /add && net localgroup administrators [username] /add
+#FW Rule: Block 192.168.0.0/16 (Internet)
+	netsh advfirewall firewall add rule name="BlockOut" dir=out action=block remoteip=192.168.0.0/16
+#FW Rule: Block 192.168.0.0/16
+	netsh advfirewall firewall add rule name="BlockSubnet" dir=in action=block remoteip=192.168.0.0/16
+#Add Firewall Rule
+	netsh advfirewall firewall add rule name="MyRule" dir=in action=allow protocol=TCP localport=80
+#Delete Firewall Rule
+	netsh advfirewall firewall delete rule name="MyRule"
+#Show Firewall Rules
+	netsh advfirewall firewall show rule name=all
+#Show Firewall State
+	netsh advfirewall show allprofiles state
+#Show Firewall Rules (Profile)
+	netsh advfirewall show currentprofile
+#Connect to Wireless Network
+	netsh wlan connect name="SSID_NAME"
+#Disconnect from Wireless
+	netsh wlan disconnect
+#Export Networks & Passwords
+	netsh wlan export profile key=clear folder=C:\
+#Query Connected Wireless Network
+	netsh wlan show interfaces
+#List Available Wireless Networks
+	netsh wlan show networks
+#List Wireless Networks (with Strength)
+	netsh wlan show networks mode=bssid
+#List Known Wireless Networks
+	netsh wlan show profiles
+#List All Connections
+	netstat -ano
+#List Listening Connections
+	netstat -ano
+#Query Locally Connected Devices
+	pnputil /enum-devices
+#Query Logged On User
+	query user
+#Delete Folder
+	rmdir /s /q "C:\Path\To\Folder"
+#Query Event Logs (Keyword)
+	wevtutil qe System /f:text /c:5 /rd:true
+#Query Event Logs (Multiple Keywords)
+	wevtutil qe System /f:text /rd:true
+#List Connected Storage
+	wmic logicaldisk get caption,description,freespace,size
+#List Connected USB
+	wmic path Win32_USBControllerDevice get Dependent
+#Query Installed Programs
+	wmic product get name,version
+#Query Programs (Filter by Name)
+	wmic product where "name like '%%Google%%'" get name
