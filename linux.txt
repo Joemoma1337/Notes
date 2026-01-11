@@ -1,64 +1,64 @@
-echo '<password>' | sudo useradd -m -s /bin/bash -G root <username>  && echo <username>:<password> | sudo chpasswdDescription	Linux
-#	add admin user oneliner
-	
-#	Add firewall rule
-
-#	connect to wireless network
-
-#	Delete firewall rule
-
-#	Delete folder
-
-#	disconnect from wireless network
-
-#	export (to .xml) networks and passwords
-
-#	FW rule to block 192.168.0.0/16
-
-#	FW rule to block 192.168.0.0/16 (internet)
-sha1sum <path_to_file> or md5sum <path_to_file>
-#	Get file hash
-	
-#	list all connections
-
-#	list available wireless networks
-
-#	list available wireless networks (with strength)
-
-#	list connected storage
-lsblk -o name,label,size,mountpoint
-#	list connected USB
-	
-#	List known wireless networks
-netstat -lptn
-#	list listening connection
-lsblk -o name,model,vendor,serial,size	
-#	list storage
-logout <username> or pkill -KILL -t <terminal #>	
-#	log off a user
- 	
-#	query connected wireless network
-
-#	query event logs and filter by keyword
-
-#	query event logs and filter by multiple keywords
-dpkg-query -f='${binary:Package} ${Version}\n' -W or apt list --installed
-#	query installed programs
-dpkg-query -f='${binary:Package} ${Version}\n' -W | grep -i mimecast or apt list --installed | grep -i mimecast 	
-#	query installed programs and filter by name
-	
-#	query locally connected devices
-who
-#	query logged on user
-curl https://macvendors.com/query/<MAC_Address>	
-#	Query MAC address vendor
-curl -s https://ifconfig.me/ip	
-#	query public IP
-find / -iname *keyword*	
-#	search all directories for a keyword
-	
-#	show firewall rules
-
-#	show firewall rules for specific profile
-iptables -L or systemctl status firewalld or firewall-cmd --list-all or ufw status
-#	show firewall state
+#add admin user oneliner
+	useradd -m [user] -G sudo && echo "[user]:[pass]"
+#Add firewall rule
+	sudo ufw allow 80/tcp
+#connect to wireless network
+	nmcli dev wifi connect "SSID_NAME" password "PASSWORD"
+#Delete firewall rule
+	sudo ufw delete allow 80/tcp
+#Delete folder
+	rm -rf /path/to/folder
+#disconnect from wireless network
+	nmcli dev disconnect wlan0
+#export (to .xml) networks and passwords
+	sudo cp -r /etc/NetworkManager/system-connections/ .
+#FW rule to block 192.168.0.0/16
+	sudo ufw deny from 192.168.0.0/16
+#FW rule to block 192.168.0.0/16 (internet)
+	sudo ufw deny out to 192.168.0.0/16
+#Get file hash
+	sha256sum /path/to/file
+#list all connections
+	ss -atu or netstat -an
+#list available wireless networks
+	nmcli dev wifi
+#list available wireless networks (with strength)
+	nmcli -f SSID,BARS dev wifi
+#list connected storage
+	lsblk or df -h
+#list connected USB
+	lsusb
+#List known wireless networks
+	nmcli connection show
+#list listening connection
+	ss -tulpn
+#list storage
+	sudo fdisk -l
+#log off a user
+	sudo pkill -u [username]
+#query connected wireless network
+	nmcli -d or iwconfig
+#query event logs and filter by keyword
+	journalctl
+#query event logs and filter by multiple keywords
+	journalctl
+#query installed programs
+	dpkg-query -l (Debian) or rpm -qa (RHEL)
+#query installed programs and filter by name
+	dpkg -l
+#query locally connected devices
+	lspci and lsusb
+#query logged on user
+	who or w
+#Query MAC address vendor
+	ip link show (Then check OUI online)
+#query public IP
+	curl ifconfig.me
+#search all directories for a keyword
+	grep -rnw "/" -e "keyword"
+#show firewall rules
+	sudo ufw status numbered
+#show firewall rules for specific profile
+	sudo ufw status verbose
+#show firewall state
+	sudo ufw status
