@@ -1,67 +1,64 @@
-#Powershell
-#	Description
-
-New-LocalUser -Name <username> -Password (ConvertTo-SecureString <password> -AsPlainText -Force) -PasswordNeverExpires 1 -AccountNeverExpires 1 -UserMayNotChangePassword 1 -Description "Administrator account" -ErrorAction 	add SilentlyContinue ; Add-LocalGroupMember -Group "Administrators" -Member <username>
-#	admin user oneliner
-New-NetFirewallRule -Name "Rule Name" -Direction Inbound|Outbound -Action Block|Allow -Protocol TCP|UDP -LocalPort <port number> -RemoteAddress <IP address>
-#	Add firewall rule
-Add-NetConnectionProfile -Name <network name> -SSID <network name> -ConnectionMode Auto -KeyMaterial <network password>
-#	connect to wireless network
-Remove-NetFirewallRule -DisplayName "Rule Name"
-#	Delete firewall rule
-
-#	Delete folder
-Remove-NetConnectionProfile -Name <network name>
-#	disconnect from wireless network
-(Get-NetConnectionProfile).Name | ForEach-Object {netsh wlan show profile name=$_ key=clear|Select-String "Key Content"}
-#	export (to .xml) networks and passwords
-New-NetFirewallRule -DisplayName "Block Class C IPs" -Direction Inbound -RemoteAddress "192.168.0.0/24" -Action Block
-#	FW rule to block 192.168.0.0/16
-New-NetFirewallRule -Name "192.168 Block" -Action Block -Profile Any -LocalAddress 192.168.0.0/16 -RemotePort 53,80,443 -Direction Outbound -Protocol TCP
-#	FW rule to block 192.168.0.0/16 (internet)
-Get-FileHash <path_to_file> -Algorithm <Algorithm>
-#	Get file hash
-Get-NetTCPConnection -verbose
-#	list all connections
-(netsh wlan show networks | Select-String "SSID").Line
-#	list available wireless networks
-
-#	list available wireless networks (with strength)
-
-#	list connected storage
-Get-WmiObject -Class Win32_DiskDrive | Where-Object {$_.InterfaceType -eq "USB"} | Select-Object DeviceID, Caption
-#	list connected USB
-Get-WLANProfile
-#	List known wireless networks
-Get-NetTCPConnection -verbose | Where-Object {$_.State -eq "Listen"}
-#	list listening connection
-Get-WmiObject -Class Win32_DiskDrive | Select-Object Name, Manufacturer, Model, InterfaceType, MediaLoaded, MediaType
-#	list storage
-logoff <session ID> /server:<computername>
-#	log off a user
-
-#	query connected wireless network
-Get-EventLog -LogName Application -Source "*" | Where-Object {$_.Message -like "*keyword*"}
-#	query event logs and filter by keyword
-Get-EventLog -LogName Application -Source "*" | Where-Object {$_.Message -like "*keyword1*" -or $_.Message -like "*keyword2*"}
-#	query event logs and filter by multiple keywords
-Get-WmiObject -Class Win32_Product | select-object -property Name, Version
-#	query installed programs
-(Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -like "*mimecast*"} | Select-Object Name, Version)
-#	query installed programs and filter by name
-et-NetNeighbor | Select-Object IPAddress,LinkLayerAddress
-#	query locally connected devices	
-quser
-#	query logged on user
-(Invoke-WebRequest -Uri https://macvendors.com/query/<MAC_Address> -UseBasicParsing).Content
-#	Query MAC address vendor
-(curl https://ifconfig.me/ip).Content or (Invoke-WebRequest ifconfig.me/ip).Content.Trim()
-#	query public IP
-Get-ChildItem -Path C:\ -Recurse -Filter *silverfort* -File -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName
-#	search all directories for a keyword
-Get-NetFirewallRule
-#	show firewall rules
-
-#	show firewall rules for specific profile
-Get-NetFirewallProfile
-#	show firewall state
+#Admin User (One-liner)
+	New-LocalUser -Name User" -Password ("Pass" | ConvertTo-SecureString -AsPlainText -Force) ; Add-LocalGroupMember -Group "Administrators" -Member "User
+#Add Firewall Rule
+	New-NetFirewallRule -DisplayName "Allow80" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 80
+#Connect to Wireless Network
+	netsh wlan connect name="SSID_NAME" (PS doesn't have a native 'connect' cmdlet; netsh is used)
+#Delete Firewall Rule
+	Remove-NetFirewallRule -DisplayName "Allow80"
+#Delete Folder
+	Remove-Item -Recurse -Force "C:\Path\To\Folder"
+#Disconnect from Wireless
+	netsh wlan disconnect
+#Export Networks & Passwords
+	netsh wlan export profile key=clear folder=$env:USERPROFILE\Desktop
+#FW Rule: Block 192.168.0.0/16
+	New-NetFirewallRule -DisplayName "BlockSubnet" -Direction Inbound -Action Block -RemoteAddress 192.168.0.0/16
+#FW Rule: Block 192.168.0.0/16 (Internet)
+	New-NetFirewallRule -DisplayName "BlockOut" -Direction Outbound -Action Block -RemoteAddress 192.168.0.0/16
+#Get File Hash
+	Get-FileHash -Path "C:\path\file.exe" -Algorithm SHA256
+#List All Connections
+	Get-NetTCPConnection
+#List Available Wireless Networks
+	Get-NetAdapter | Where-Object {$_.Status -eq "Up"} (Or netsh wlan show networks)
+#List Wireless (with Strength)
+	(netsh wlan show networks mode=bssid) -match 'SSID|Signal'
+#List Connected Storage
+	Get-Volume or Get-PSDrive -PSProvider FileSystem
+#List Connected USB
+	Get-PnpDevice -PresentOnly | Where-Object { $_.InstanceId -match 'USB' }
+#List Known Wireless Networks
+	Get-NetAdapter -Name "Wi-Fi" | Get-NetIPAddress (Or netsh wlan show profiles)
+#List Listening Connections
+	Get-NetTCPConnection -State Listen
+#List Storage
+	Get-Disk
+#Log Off a User
+	Invoke-CimMethod -Query "Select * from Win32_OperatingSystem" -MethodName Win32Shutdown -Arguments @{Flags=0}
+#Query Connected Wireless Network
+	Get-NetAdapter -Name "Wi-Fi" | Select-Object InterfaceDescription, Status, LinkSpeed
+#Query Event Logs (Keyword)
+	Get-WinEvent -LogName System | Where-Object {$_.Message -like "*Keyword*"}
+#Query Event Logs (Multi-Keyword)
+	Get-WinEvent -LogName System | Where-Object {$_.Message -match "Error|Warning"}
+#Query Installed Programs
+	Get-Package or Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName
+#Query Programs (Filter by Name)
+	Get-Package -Name "*Google*"
+#Query Locally Connected Devices
+	Get-PnpDevice -Status OK
+#Query Logged On User
+	Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object UserName
+#Query MAC Address Vendor
+	Get-NetAdapter | Select-Object Name, MacAddress
+#Query Public IP
+	Invoke-RestMethod -Uri "https://api.ipify.org"
+#Search All Directories (Keyword)
+	Get-ChildItem -Path "C:\" -Recurse -ErrorAction SilentlyContinue | Select-String "Keyword"
+#Show Firewall Rules
+	Get-NetFirewallRule
+#Show Firewall Rules (Profile)
+	Get-NetFirewallRule -PolicyStore ActiveStore
+#Show Firewall State
+	Get-NetFirewallProfile
